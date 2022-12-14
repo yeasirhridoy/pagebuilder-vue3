@@ -1,5 +1,5 @@
 <template>
-    <div class="collapse collapse-arrow">
+    <div class="collapse collapse-arrow" style="visibility: visible">
         <input type="checkbox">
         <div class="collapse-title text-xl font-medium">
             {{ title }}
