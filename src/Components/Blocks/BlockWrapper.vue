@@ -1,136 +1,137 @@
 <template>
-    <div class="relative">
-        <div class="pl-12">
-            <component :is="block.componentName" :block="block"/>
-        </div>
-
-        <div class="absolute top-0 left-0 flex flex-col py-2 px-0 -ml-1.5 space-y-2 text-white bg-gray-600 rounded-md">
-            <div class="btn btn-sm btn-ghost handle">
-                <Icon name="move" class="h-5 w-5"/>
-            </div>
-            <div class="flex flex-col items-center justify-center drawer-content">
-                <label @click="toggleDrawer()" :for="block.uuid" class="btn btn-sm btn-ghost drawer-button">
-                    <Icon name="settings" class="h-5 w-5"/>
-                </label>
-            </div>
-            <div @click="handleDeleteEvent()" class="btn btn-sm btn-ghost text-red-600">
-                <Icon name="trash" class="h-5 w-5"/>
-            </div>
-        </div>
+  <div class="relative">
+    <div class="pl-12">
+      <component :is="localBlock.componentName" :block="localBlock"/>
     </div>
 
-    <teleport to="body">
-        <div v-if="showDrawer" class="fixed top-0 left-0">
-            <input :id="block.uuid" type="checkbox" class="drawer-toggle">
-            <div class="drawer-side h-screen">
-                <label :for="block.uuid" class="drawer-overlay"></label>
-                <ul class="menu p-4 overflow-y-auto border-r-2 w-64 bg-base-100 text-base-content">
-                    <button @click="showDrawer = false" class="btn btn-sm btn-active mt-2">Close</button>
-                    <p class="my-4 font-bold uppercase">Block options</p>
-                    <component :is="block.optionsComponentName" v-model="block"/>
-                </ul>
-            </div>
-        </div>
-    </teleport>
+    <div class="absolute top-0 left-0 flex flex-col py-2 px-0 -ml-1.5 space-y-2 text-white bg-gray-600 rounded-md">
+      <div class="btn btn-sm btn-ghost handle">
+        <Icon name="move" class="h-5 w-5"/>
+      </div>
+      <div class="flex flex-col items-center justify-center drawer-content">
+        <label @click="toggleDrawer()" :for="localBlock.uuid" class="btn btn-sm btn-ghost drawer-button">
+          <Icon name="settings" class="h-5 w-5"/>
+        </label>
+      </div>
+      <div @click="handleDeleteEvent()" class="btn btn-sm btn-ghost text-red-600">
+        <Icon name="trash" class="h-5 w-5"/>
+      </div>
+    </div>
+  </div>
+
+  <teleport to="body">
+    <div v-if="showDrawer" class="fixed top-0 left-0">
+      <input :id="localBlock.uuid" type="checkbox" class="drawer-toggle">
+      <div class="drawer-side h-screen">
+        <label :for="localBlock.uuid" class="drawer-overlay"></label>
+        <ul class="menu p-4 overflow-y-auto border-r-2 w-64 bg-base-100 text-base-content">
+          <button @click="showDrawer = false" class="btn btn-sm btn-active mt-2">Close</button>
+          <p class="my-4 font-bold uppercase">Block options</p>
+          <component :is="localBlock.optionsComponentName" v-model="localBlock"/>
+        </ul>
+      </div>
+    </div>
+  </teleport>
 </template>
 
 <script>
-    import { ref } from 'vue'
-    import Icon from '../Icon.vue'
-    
-    import HeroImageLeft from './Heroes/HeroImageLeft.vue'
-    import HeroImageLeftOptions from './Heroes/HeroImageLeftOptions.vue'
-    import HeroFormLeft from './Heroes/HeroFormLeft.vue'
-    import HeroFormLeftOptions from './Heroes/HeroFormLeftOptions.vue'
-    import HeroVideoCenter from './Heroes/HeroVideoCenter.vue'
-    import HeroVideoCenterOptions from './Heroes/HeroVideoCenterOptions.vue'
+import {ref} from 'vue'
+import Icon from '../Icon.vue'
 
-    import AuthorImageLeft from './Author/AuthorImageLeft.vue'
-    import AuthorImageLeftOptions from './Author/AuthorImageLeftOptions.vue'
+import HeroImageLeft from './Heroes/HeroImageLeft.vue'
+import HeroImageLeftOptions from './Heroes/HeroImageLeftOptions.vue'
+import HeroFormLeft from './Heroes/HeroFormLeft.vue'
+import HeroFormLeftOptions from './Heroes/HeroFormLeftOptions.vue'
+import HeroVideoCenter from './Heroes/HeroVideoCenter.vue'
+import HeroVideoCenterOptions from './Heroes/HeroVideoCenterOptions.vue'
 
-    import BuySimple from './Buy/BuySimple.vue'
-    import BuySimpleOptions from './Buy/BuySimpleOptions.vue'
+import AuthorImageLeft from './Author/AuthorImageLeft.vue'
+import AuthorImageLeftOptions from './Author/AuthorImageLeftOptions.vue'
 
-    import FeaturesGrid3 from './Features/FeaturesGrid3.vue'
-    import FeaturesGrid3Options from './Features/FeaturesGrid3Options.vue'
-    
-    import Guarantee7Days from './Guarantees/Guarantee7Days.vue'
-    import Guarantee7DaysOptions from './Guarantees/Guarantee7DaysOptions.vue'
+import BuySimple from './Buy/BuySimple.vue'
+import BuySimpleOptions from './Buy/BuySimpleOptions.vue'
 
-    import Guarantee10Days from './Guarantees/Guarantee10Days.vue'
-    import Guarantee10DaysOptions from './Guarantees/Guarantee10DaysOptions.vue'
+import FeaturesGrid3 from './Features/FeaturesGrid3.vue'
+import FeaturesGrid3Options from './Features/FeaturesGrid3Options.vue'
 
-    import Guarantee15Days from './Guarantees/Guarantee15Days.vue'
-    import Guarantee15DaysOptions from './Guarantees/Guarantee15DaysOptions.vue'
-    
-    import Guarantee30Days from './Guarantees/Guarantee30Days.vue'
-    import Guarantee30DaysOptions from './Guarantees/Guarantee30DaysOptions.vue'
+import Guarantee7Days from './Guarantees/Guarantee7Days.vue'
+import Guarantee7DaysOptions from './Guarantees/Guarantee7DaysOptions.vue'
 
-    import ChaptersCollapse from './Chapters/ChaptersCollapse.vue'
-    import ChaptersCollapseOptions from './Chapters/ChaptersCollapseOptions.vue'
+import Guarantee10Days from './Guarantees/Guarantee10Days.vue'
+import Guarantee10DaysOptions from './Guarantees/Guarantee10DaysOptions.vue'
 
-    import FAQCollapse from './FAQ/FAQCollapse.vue'
-    import FAQCollapseOptions from './FAQ/FAQCollapseOptions.vue'
-    import FAQList from './FAQ/FAQList.vue'
-    import FAQListOptions from './FAQ/FAQListOptions.vue'
+import Guarantee15Days from './Guarantees/Guarantee15Days.vue'
+import Guarantee15DaysOptions from './Guarantees/Guarantee15DaysOptions.vue'
 
-    export default {
-        name: 'BlockWrapper',
-        emits: ['delete'],
-        components: {
-            Icon,
+import Guarantee30Days from './Guarantees/Guarantee30Days.vue'
+import Guarantee30DaysOptions from './Guarantees/Guarantee30DaysOptions.vue'
 
-            HeroImageLeft,
-            HeroImageLeftOptions,
-            HeroFormLeft,
-            HeroFormLeftOptions,
-            HeroVideoCenter,
-            HeroVideoCenterOptions,
+import ChaptersCollapse from './Chapters/ChaptersCollapse.vue'
+import ChaptersCollapseOptions from './Chapters/ChaptersCollapseOptions.vue'
 
-            AuthorImageLeft,
-            AuthorImageLeftOptions,
+import FAQCollapse from './FAQ/FAQCollapse.vue'
+import FAQCollapseOptions from './FAQ/FAQCollapseOptions.vue'
+import FAQList from './FAQ/FAQList.vue'
+import FAQListOptions from './FAQ/FAQListOptions.vue'
 
-            BuySimple,
-            BuySimpleOptions,
+export default {
+  name: 'BlockWrapper',
+  emits: ['delete'],
+  components: {
+    Icon,
 
-            FeaturesGrid3,
-            FeaturesGrid3Options,
+    HeroImageLeft,
+    HeroImageLeftOptions,
+    HeroFormLeft,
+    HeroFormLeftOptions,
+    HeroVideoCenter,
+    HeroVideoCenterOptions,
 
-            Guarantee7Days,
-            Guarantee7DaysOptions,
-            Guarantee10Days,
-            Guarantee10DaysOptions,
-            Guarantee15Days,
-            Guarantee15DaysOptions,
-            Guarantee30Days,
-            Guarantee30DaysOptions,
+    AuthorImageLeft,
+    AuthorImageLeftOptions,
 
-            ChaptersCollapse,
-            ChaptersCollapseOptions,
+    BuySimple,
+    BuySimpleOptions,
 
-            FAQCollapse,
-            FAQCollapseOptions,
-            FAQList,
-            FAQListOptions,
-        },
-        props: {
-            block: {
-                type: Object,
-                required: true
-            }
-        },
-        setup(props, context) {
-            const handleDeleteEvent = () => {
-                context.emit('delete', props.block)
-            }
+    FeaturesGrid3,
+    FeaturesGrid3Options,
 
-            const showDrawer = ref(false)
+    Guarantee7Days,
+    Guarantee7DaysOptions,
+    Guarantee10Days,
+    Guarantee10DaysOptions,
+    Guarantee15Days,
+    Guarantee15DaysOptions,
+    Guarantee30Days,
+    Guarantee30DaysOptions,
 
-            const toggleDrawer = () => {
-                showDrawer.value = !showDrawer.value
-            }
+    ChaptersCollapse,
+    ChaptersCollapseOptions,
 
-            return { handleDeleteEvent, showDrawer, toggleDrawer }
-        },
+    FAQCollapse,
+    FAQCollapseOptions,
+    FAQList,
+    FAQListOptions,
+  },
+  props: {
+    block: {
+      type: Object,
+      required: true
     }
+  },
+  setup(props, context) {
+    const localBlock = ref(props.block)
+    const handleDeleteEvent = () => {
+      context.emit('delete', localBlock.value)
+    }
+
+    const showDrawer = ref(false)
+
+    const toggleDrawer = () => {
+      showDrawer.value = !showDrawer.value
+    }
+
+    return {handleDeleteEvent, showDrawer, toggleDrawer}
+  },
+}
 </script>
