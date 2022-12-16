@@ -35,7 +35,7 @@
             const store = useStore()
 
             onMounted(() => {
-                store.dispatch(ACTION_GET_LANDING_PAGES)
+                store.dispatch("getLandingPagesFromApi")
             })
 
             return { store }

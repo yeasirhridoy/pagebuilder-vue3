@@ -1,4 +1,4 @@
-import { createStore } from 'vuex';
+import {createStore} from 'vuex';
 import Api from './api'
 
 import {
@@ -83,14 +83,14 @@ export default createStore({
 
     getters: {
         findLandingPage: (state) => (uuid) => {
-            if(state.landingPages == null) {
+            if (state.landingPages == null) {
                 return null
             }
 
             return state.landingPages.find(landingPage => landingPage.uuid == uuid)
         },
         findImagePageByUuid: (state) => (uuid) => {
-            if(state.images == null) {
+            if (state.images == null) {
                 return null
             }
 
@@ -101,10 +101,10 @@ export default createStore({
     actions: {
         [ACTION_GET_LANDING_PAGES]: (context) => {
             return new Promise((resolve, reject) => {
-                if(context.state.landingPages == null) {
+                if (context.state.landingPages == null) {
                     Api.fetchLandingPages()
                         .then(response => {
-                            context.commit(MUTATION_SET_LANDING_PAGES, { landingPages: response.data })
+                            context.commit(MUTATION_SET_LANDING_PAGES, {landingPages: response.data})
                             resolve(response)
                         })
                         .catch(error => {
@@ -114,11 +114,24 @@ export default createStore({
             })
         },
 
+        getLandingPagesFromApi: (context) => {
+            return new Promise((resolve, reject) => {
+                Api.fetchLandingPages()
+                    .then(response => {
+                        context.commit(MUTATION_SET_LANDING_PAGES, {landingPages: response.data})
+                        resolve(response)
+                    })
+                    .catch(error => {
+                        reject(error)
+                    })
+            })
+        },
+
         [ACTION_DELETE_LANDING_PAGE]: (context, uuid) => {
             return new Promise((resolve, reject) => {
                 Api.deleteLandingPage(uuid)
                     .then(response => {
-                        context.commit(MUTATION_DELETE_LANDING_PAGE, { uuid: uuid })
+                        context.commit(MUTATION_DELETE_LANDING_PAGE, {uuid: uuid})
                         resolve(response)
                     })
                     .catch(error => {
@@ -131,18 +144,17 @@ export default createStore({
             return new Promise((resolve, reject) => {
                 Api.createLandingPage(data)
                     .then(response => {
-                        if(context.state.landingPages == null) {
+                        if (context.state.landingPages == null) {
                             context.dispatch(ACTION_GET_LANDING_PAGES)
                                 .then(() => {
-                                    context.commit(MUTATION_ADD_LANDING_PAGE, { landingPage: response.data })
+                                    context.commit(MUTATION_ADD_LANDING_PAGE, {landingPage: response.data})
                                     resolve(response)
                                 })
                                 .catch(error => {
                                     reject(error)
                                 })
-                        }
-                        else {
-                            context.commit(MUTATION_ADD_LANDING_PAGE, { landingPage: response.data })
+                        } else {
+                            context.commit(MUTATION_ADD_LANDING_PAGE, {landingPage: response.data})
                             resolve(response)
                         }
                     })
@@ -156,7 +168,7 @@ export default createStore({
             return new Promise((resolve, reject) => {
                 Api.updateDraft(data.uuid, data.draft)
                     .then(response => {
-                        if(context.state.landingPages == null) {
+                        if (context.state.landingPages == null) {
                             context.dispatch(ACTION_GET_LANDING_PAGES)
                                 .then(() => {
                                     resolve(response)
@@ -164,9 +176,8 @@ export default createStore({
                                 .catch(error => {
                                     reject(error)
                                 })
-                        }
-                        else {
-                            context.commit(MUTATION_UPDATE_LANDING_PAGE, { landingPage: response.data })
+                        } else {
+                            context.commit(MUTATION_UPDATE_LANDING_PAGE, {landingPage: response.data})
                             resolve(response)
                         }
                     })
@@ -180,7 +191,7 @@ export default createStore({
             return new Promise((resolve, reject) => {
                 Api.updatePages(data.uuid, data.pages)
                     .then(response => {
-                        if(context.state.landingPages == null) {
+                        if (context.state.landingPages == null) {
                             context.dispatch(ACTION_GET_LANDING_PAGES)
                                 .then(() => {
                                     resolve(response)
@@ -188,9 +199,8 @@ export default createStore({
                                 .catch(error => {
                                     reject(error)
                                 })
-                        }
-                        else {
-                            context.commit(MUTATION_UPDATE_LANDING_PAGE, { landingPage: response.data })
+                        } else {
+                            context.commit(MUTATION_UPDATE_LANDING_PAGE, {landingPage: response.data})
                             resolve(response)
                         }
                     })
