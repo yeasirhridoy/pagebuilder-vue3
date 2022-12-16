@@ -10,7 +10,7 @@
                     <div class="list-group-item">
                         <div class="mb-4 p-1 border border-gray-400 rounded-md">
                             <span>{{ element.description }}</span>
-                            <img :src="element.thumbUrl" class="w-full h-auto" loading="lazy">
+                            <img :src="element.thumbUrl" class="w-full h-auto" loading="lazy" alt="">
                         </div>
                     </div>
                 </template>

@@ -119,10 +119,17 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      localBlock: this.block
+    }
+  },
+  mounted() {
+    this.localBlock = this.block
+  },
   setup(props, context) {
-    const localBlock = ref(props.block)
     const handleDeleteEvent = () => {
-      context.emit('delete', localBlock.value)
+      context.emit('delete', props.block)
     }
 
     const showDrawer = ref(false)
